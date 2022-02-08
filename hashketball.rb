@@ -1,4 +1,5 @@
 # Write your code below game_hash
+require 'pry'
 def game_hash
   {
     home: {
@@ -127,3 +128,43 @@ def game_hash
 end
 
 # Write code here
+def num_points_scored name
+  match = game_hash[:home][:players].find{|p| p[:player_name] == name} || game_hash[:away][:players].find{|p| p[:player_name] == name}
+  match[:points]
+end
+
+def shoe_size name
+  match = game_hash[:home][:players].find{|p| p[:player_name] == name} || game_hash[:away][:players].find{|p| p[:player_name] == name}
+  match[:shoe]
+end
+
+def team_colors name
+  if game_hash[:home][:team_name] == name
+    game_hash[:home][:colors]
+  elsif game_hash[:away][:team_name] == name
+    game_hash[:away][:colors]
+  end
+end
+
+def team_names
+  game_hash.values.map{|t| t[:team_name]}
+end
+
+def player_numbers team
+  match = game_hash.find {|k,v| v[:team_name] == team}
+  match[1][:players].map {|p| p[:number]}
+end
+
+def player_stats name
+  game_hash[:home][:players].find {|i| i[:player_name] == name} || game_hash[:away][:players].find {|i| i[:player_name] == name}
+end
+
+def big_shoe_rebounds
+  players = []
+  game_hash[:home][:players].each {|p| players.push p}
+  game_hash[:away][:players].each {|p| players.push p}
+
+  players.sort_by! {|p| p[:shoe]}
+  players.last[:rebounds]
+
+end
